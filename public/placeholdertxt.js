@@ -30,27 +30,27 @@ function Logout (){
       });
 }
 
-function FormattedText(){
-    location.replace("placeholdertxt.html");
+
+function GoToIndex(){
+    location.replace("index.html")
 }
 
 var  VAArray = [];
 var counter = 0;  
 
-function GetDictionaryV2Data(){
+
+function GetPlaceholderText(){
 
 
    const database = firebase.database();
    
    
-database.ref('/VirtulAssistant').orderByChild("createdDate").limitToLast(100) 
+database.ref('/PlaceholderText').orderByChild("createdDate").limitToLast(50) 
    .once("value",function(ALLRecords){
        ALLRecords.forEach(
            function(CurrentRecord) {
               
-   var input = CurrentRecord.val().input;
-   var output = CurrentRecord.val().output;
-   var totaltokensused = CurrentRecord.val().totaltokensused;
+   var placeholderText = CurrentRecord.val().placeholderText;
    var createdDate = CurrentRecord.val().createdDate;
 
 //way 1 just displays day and month
@@ -66,9 +66,7 @@ var time = new Date(createdDate).toLocaleTimeString("en-UK")
 var formatteddate = date+" " +time;
 
               var VAObject = 
-                   {"input":input,
-                   "output":output,
-                   "totaltokensused":totaltokensused,
+                   {"placeholderText":placeholderText,
                    "formatteddate":formatteddate};
                   
                
@@ -81,7 +79,7 @@ var formatteddate = date+" " +time;
 
         counter = 1;  
         
-        AddDictionaryV2Data(VAArray);
+        AddPlaceholdertext(VAArray);
        
 
        });
@@ -92,7 +90,7 @@ var formatteddate = date+" " +time;
 
 
 
-function AddDictionaryV2Data (VAArray){
+function AddPlaceholdertext(VAArray){
   
    //remove the placeholer first
    const placeholder1 = document.getElementById('placeholder-animation1');
@@ -118,10 +116,7 @@ document.getElementById('galaxzdiv'+counter).append(toppara);
 
 amountneeded = ((VAArray[i].totaltokensused/1000)*0.02).toFixed(3);
 
-var curatedDate = document.createElement('span');
-curatedDate.id = 'curatedDate'+counter;
-curatedDate.innerText = "T- "+VAArray[i].totaltokensused+ "   ($ "+amountneeded +")";
-document.getElementById('toppara'+counter).append(curatedDate);
+
 
 var curatedDate = document.createElement('span');
 curatedDate.id = 'curatedDate'+counter;
@@ -136,14 +131,8 @@ document.getElementById('galaxzdiv'+counter).append(titleDesc);
 var title = document.createElement('h5');
 title.id = 'post-title'+counter;
 title.className = 'post-title';
-title.innerText = VAArray[i].input;
+title.innerText = VAArray[i].placeholderText;
 document.getElementById('titleDesc'+counter).append(title);
-
-var postsubtitle = document.createElement('h6');
-postsubtitle.id = 'post-subtitle'+counter;
-postsubtitle.className = 'post-subtitle';
-postsubtitle.innerText = VAArray[i].output;
-document.getElementById('titleDesc'+counter).append(postsubtitle);
 
 var br = document.createElement("br");
 document.getElementById('galaxzdiv'+counter).append(br);
